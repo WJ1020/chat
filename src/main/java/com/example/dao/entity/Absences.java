@@ -14,7 +14,7 @@ public class Absences {
     private String course;
     //时间
     private Date date;
-    //状态（缺课请假迟到）
+    //状态（0缺课请假迟到）
     private int state;
 
     public Absences(Student student, String course, Date date, int state) {
