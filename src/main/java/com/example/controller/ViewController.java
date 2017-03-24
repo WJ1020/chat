@@ -2,7 +2,9 @@ package com.example.controller;
 
 import com.example.dao.entity.SNSUserInfo;
 import com.example.entity.CLICKMessage;
+import com.example.entity.WXJsConfig;
 import com.example.service.ConfigService;
+import com.example.service.JSApiService;
 import com.example.service.RespEventService;
 import com.example.service.DBService.SNSUserInfoService;
 import com.example.util.OAuth;
@@ -21,6 +23,10 @@ import java.util.Map;
 public class ViewController {
     @Autowired
     private SNSUserInfoService snsUserInfoService;
+    @Autowired
+    private RespEventService respEventService;
+    @Autowired
+    private JSApiService jsApiService;
     @RequestMapping(value = "student",method = RequestMethod.GET)
     public String student(@RequestParam(value = "code",required = false) String code){
         if (code!=null){
@@ -40,14 +46,13 @@ public class ViewController {
         return "student";
     }
 
-    @Autowired
-    private RespEventService respEventService;
-    @ResponseBody
-    @GetMapping("/test")
-    public Object test(){
-      return   respEventService.event(new CLICKMessage("123","321",123,"event","CLICK","12378"));
-    }
 
+//    @ResponseBody
+//    @GetMapping("/test")
+//    public Object test(){
+//      return   respEventService.event(new CLICKMessage("123","321",123,"event","CLICK","12378"));
+//    }
+//
 //    @GetMapping("wxlogin")
 //    public String wxLogin() throws UnsupportedEncodingException {
 //        String url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
@@ -58,4 +63,10 @@ public class ViewController {
 //        url=url.replace("APPID",appid).replace("REDIRECT_URI",response_type).replace("SCOPE","snsapi_userinfo");
 //        return "redirect:"+url;
 //    }
+    @RequestMapping(value = "/js/{url}",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public WXJsConfig getWXJsConfig(@PathVariable("url") String url){
+        return jsApiService.getWXJsConfig(url);
+    }
+
 }
