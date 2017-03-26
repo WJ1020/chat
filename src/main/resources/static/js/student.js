@@ -37,4 +37,17 @@ function findAllStudent() {
         }
     })
 }
+function getCookie(name) {
+    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+    if (arr = document.cookie.match(reg))
+        return unescape(arr[2]);
+    else
+        return null;
+}
+var openId=getCookie("openid");
+if (openId==null||openId==""){
+    jump_author();
+}else {
+    alert("cookie->openid "+openId);
+}
 findAllStudent();

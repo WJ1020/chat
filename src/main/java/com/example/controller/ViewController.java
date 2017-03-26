@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -28,13 +30,15 @@ public class ViewController {
     @Autowired
     private JSApiService jsApiService;
     @RequestMapping(value = "student",method = RequestMethod.GET)
-    public String student(@RequestParam(value = "code",required = false) String code){
+    public String student(@RequestParam(value = "code",required = false) String code, HttpServletResponse httpServletResponse){
         if (code!=null){
             //首先获取
             Map<String,String> map= OAuth.getAccessToken(ConfigService.getAppid(),ConfigService.getSecret(),code);
             if(map!=null){
                 String userAccess_token=map.get("access_token");
                 String openID=map.get("openid");
+                Cookie cookie=new Cookie("openid",openID);
+                httpServletResponse.addCookie(cookie);
                 SNSUserInfo snsUserInfo=OAuth.getUserInfo(userAccess_token,openID);
                 if (snsUserInfo!=null){
                     snsUserInfoService.save(snsUserInfo);
@@ -47,11 +51,11 @@ public class ViewController {
     }
 
 
-//    @ResponseBody
-//    @GetMapping("/test")
-//    public Object test(){
-//      return   respEventService.event(new CLICKMessage("123","321",123,"event","CLICK","12378"));
-//    }
+
+    @GetMapping("/test")
+    public Object test(){
+        return "test";
+    }
 //
 //    @GetMapping("wxlogin")
 //    public String wxLogin() throws UnsupportedEncodingException {
@@ -63,9 +67,9 @@ public class ViewController {
 //        url=url.replace("APPID",appid).replace("REDIRECT_URI",response_type).replace("SCOPE","snsapi_userinfo");
 //        return "redirect:"+url;
 //    }
-    @RequestMapping(value = "/js/{url}",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/js",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public WXJsConfig getWXJsConfig(@PathVariable("url") String url){
+    public WXJsConfig getWXJsConfig(@RequestParam("u") String url){
         return jsApiService.getWXJsConfig(url);
     }
 
