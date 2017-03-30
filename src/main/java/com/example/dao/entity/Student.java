@@ -10,7 +10,7 @@ public class Student {
     //姓名
     private String name;
     //性别
-    private int six;
+    private int sex;
     //学院
     private String college;
     //专业
@@ -21,10 +21,11 @@ public class Student {
     public Student(){
 
     }
-    public Student(String sno, String name, int six, String college, String major, String grade) {
+
+    public Student(String sno, String name, int sex, String college, String major, String grade) {
         this.sno = sno;
         this.name = name;
-        this.six = six;
+        this.sex = sex;
         this.college = college;
         this.major = major;
         this.grade = grade;
@@ -46,12 +47,12 @@ public class Student {
         this.name = name;
     }
 
-    public int getSix() {
-        return six;
+    public int getSex() {
+        return sex;
     }
 
-    public void setSix(int six) {
-        this.six = six;
+    public void setSex(int sex) {
+        this.sex = sex;
     }
 
     public String getCollege() {

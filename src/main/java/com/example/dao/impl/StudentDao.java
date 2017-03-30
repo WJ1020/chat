@@ -22,12 +22,12 @@ public class StudentDao
     private JdbcTemplate jdbcTemplate;
 
     public int save(Student student){
-        String sql="INSERT INTO student (sno ,name,six,college,major,grade) VALUES (?,?,?,?,?,?)";
-        return  this.jdbcTemplate.update(sql,student.getSno(),student.getName(),student.getSix(),student.getCollege(),student.getMajor(),student.getGrade());
+        String sql="INSERT INTO student (sno ,name,sex,college,major,grade) VALUES (?,?,?,?,?,?)";
+        return  this.jdbcTemplate.update(sql,student.getSno(),student.getName(),student.getSex(),student.getCollege(),student.getMajor(),student.getGrade());
     }
     public Student findBySno(String sno){
         Student student=null;
-        String sql="select sno,name,six,college,major,grade FROM Student WHERE sno=?";
+        String sql="select sno,name,sex,college,major,grade FROM Student WHERE sno=?";
        try {
            RowMapper<Student> rowMapper=new BeanPropertyRowMapper<>(Student.class);
            student=this.jdbcTemplate.queryForObject(sql,new Object[]{sno},rowMapper);
@@ -36,8 +36,14 @@ public class StudentDao
        }
         return student;
     }
+    public List<Student> findByMajor(String major){
+        String sql="SELECT sno,name,";
+        RowMapper<Student> rowMapper=new BeanPropertyRowMapper<>(Student.class);
+        List<Student> students=this.jdbcTemplate.query(sql,new Object[]{major},rowMapper);
+        return students;
+    }
     public List<Student> findAll(){
-        String sql="select sno,name,six,college,major,grade from Student";
+        String sql="select sno,name,sex,college,major,grade from Student";
         RowMapper<Student> rowMapper=new BeanPropertyRowMapper<>(Student.class);
         List<Student> students=this.jdbcTemplate.query(sql,rowMapper);
         return students;
