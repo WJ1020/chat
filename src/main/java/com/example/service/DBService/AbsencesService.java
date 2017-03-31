@@ -23,4 +23,7 @@ public class AbsencesService {
     public List<Absences> findByCourse(String course){
         return absencesDao.findByCourse(course);
     }
+    public int save(Absences absences){
+        return absencesDao.save(absences);
+    }
 }

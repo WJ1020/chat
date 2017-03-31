@@ -55,7 +55,7 @@ public class CourseDao {
      * @return
      */
     public List<Course> findNowCourse(String openid,int i){
-        String sql="";
+        String sql="SELECT id,openid,name,college,major,grade,teacherName,count FROM Course WHERE openid=? AND count=?";
         RowMapper<Course> rowMapper=new BeanPropertyRowMapper<>(Course.class);
         List<Course> courses=this.jdbcTemplate.query(sql,new Object[]{openid,i},rowMapper);
         return courses;

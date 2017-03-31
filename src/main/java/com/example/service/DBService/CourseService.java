@@ -27,6 +27,10 @@ public class CourseService {
     public List<Course> findByOpenId(String openid){
         return courseDao.findByOpenid(openid);
     }
+
+    public List<Course> findNowCourse(String openid,int i){
+        return courseDao.findNowCourse(openid,i);
+    }
     public void batchUpdate(List<Course> courses){
         courseDao.batchUpdateOpenid(courses);
     }

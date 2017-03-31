@@ -30,4 +30,8 @@ public class StudentService {
     public int delete(String sno){
         return this.studentDao.delete(sno);
     }
+
+    public List<Student> findByMajor(String major){
+        return this.studentDao.findByMajor(major);
+    }
 }

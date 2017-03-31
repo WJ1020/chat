@@ -22,6 +22,10 @@ public class Student {
 
     }
 
+    public Student(String sno) {
+        this.sno = sno;
+    }
+
     public Student(String sno, String name, int sex, String college, String major, String grade) {
         this.sno = sno;
         this.name = name;
