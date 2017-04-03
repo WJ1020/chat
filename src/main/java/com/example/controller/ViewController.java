@@ -1,9 +1,11 @@
 package com.example.controller;
 
 import com.example.dao.entity.SNSUserInfo;
+import com.example.dao.entity.Teacher;
 import com.example.entity.CLICKMessage;
 import com.example.entity.WXJsConfig;
 import com.example.service.ConfigService;
+import com.example.service.DBService.TeacherService;
 import com.example.service.JSApiService;
 import com.example.service.RespEventService;
 import com.example.service.DBService.SNSUserInfoService;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +32,8 @@ public class ViewController {
     private RespEventService respEventService;
     @Autowired
     private JSApiService jsApiService;
+    @Autowired
+    private TeacherService teacherService;
     @RequestMapping(value = "student",method = RequestMethod.GET)
     public String student(@RequestParam(value = "code",required = false) String code, HttpServletResponse httpServletResponse){
         if (code!=null){
@@ -56,21 +61,21 @@ public class ViewController {
     public Object test(){
         return "test";
     }
-//
-//    @GetMapping("wxlogin")
-//    public String wxLogin() throws UnsupportedEncodingException {
-//        String url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
-//        String access_token= ConfigService.getAccess_token();
-//        String appid="wx8d03b75a183070f8";
-//        String response_type="http://www.wodeschool.cn/view/student";
-//        response_type= URLEncoder.encode(response_type,"utf-8");
-//        url=url.replace("APPID",appid).replace("REDIRECT_URI",response_type).replace("SCOPE","snsapi_userinfo");
-//        return "redirect:"+url;
-//    }
     @RequestMapping(value = "/js",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     @ResponseBody
     public WXJsConfig getWXJsConfig(@RequestParam("u") String url){
         return jsApiService.getWXJsConfig(url);
+    }
+    @RequestMapping(value = "/findteacher")
+    @ResponseBody
+    public List<Teacher> findTeacherByName(@RequestParam("name") String name){
+        List<Teacher> teacher=teacherService.findByName(name);
+        return teacher;
+    }
+    //跳转到绑定页面
+    @RequestMapping(value = "/bindopenid",method = RequestMethod.GET)
+    public String bindIOpenid(){
+        return "bindopenid";
     }
 
 }

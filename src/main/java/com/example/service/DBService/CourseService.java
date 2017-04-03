@@ -31,6 +31,13 @@ public class CourseService {
     public List<Course> findNowCourse(String openid,int i){
         return courseDao.findNowCourse(openid,i);
     }
+    public List<Course> findNameCollege(String teacherName,String college){
+        return courseDao.findNameCollege(teacherName,college);
+    }
+    public int updateOpenid(String openid,String college,String teacherName){
+        return courseDao.updateCourse(openid,college,teacherName);
+    }
+
     public void batchUpdate(List<Course> courses){
         courseDao.batchUpdateOpenid(courses);
     }

@@ -7,17 +7,25 @@
     <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js "></script>
     <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css"/>
     <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css"/>
-    <link rel="stylesheet" href="../static/css/student.css" th:href="@{/css/student.css}"/>
+    <link rel="stylesheet" href="../static/css/bindopenid.css" th:href="@{/css/bindopenid.css}"/>
 </head>
 <body ontouchstart="">
-<div class="weui-cells" id="students">
-
-
+<div class="weui-cells__title">请输入你的姓名来绑定微信号</div>
+<div class="weui-cells">
+    <div class="weui-cell weui-cell_vcode">
+        <div class="weui-cell__bd">
+            <input id="bind_openid" class="weui-input" type="text" placeholder="姓名"/>
+        </div>
+        <div class="weui-cell__ft">
+            <button onclick="bind()" class="weui-vcode-btn">检索</button>
+        </div>
+    </div>
+</div>
+<div id="msg">
 
 </div>
-
 </body>
 <script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
-<script type="text/javascript" src="../static/js/student.js" th:src="@{/js/student.js}"></script>
+<script type="text/javascript" src="../static/js/bindopenid.js" th:src="@{/js/bindopenid.js}"></script>
 </html>

@@ -3,9 +3,11 @@ package com.example.controller;
 import com.example.dao.entity.Absences;
 import com.example.dao.entity.Course;
 import com.example.dao.entity.Student;
+import com.example.dao.entity.Teacher;
 import com.example.service.DBService.AbsencesService;
 import com.example.service.DBService.CourseService;
 import com.example.service.DBService.StudentService;
+import com.example.service.DBService.TeacherService;
 import com.example.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,8 @@ public class DataController {
     private AbsencesService absencesService;
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private TeacherService teacherService;
 
     /**
      * 查询学生表的全部的学生
@@ -44,13 +48,14 @@ public class DataController {
      * @param openid
      * @return
      */
-    @RequestMapping(value = "/openid/{openid}",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
-    public List<Student> findAllStudent(@PathVariable("openid") String openid, HttpSession httpSession){
+    @RequestMapping(value = "/openid",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    public Object findAllStudent(@RequestParam("openid") String openid, HttpSession httpSession){
         List<Student> students=null;
         List<Course> courses=this.courseService.findNowCourse(openid, TimeUtil.getSection());
-        if (courses!=null){
+        if (courses.size()>0){
             students=this.studentService.findByMajor(courses.get(0).getMajor());
             httpSession.setAttribute("course",courses.get(0));
+            return students;
         }
         return students;
     }
@@ -69,16 +74,19 @@ public class DataController {
         int count=this.studentService.save(student);
         return count;
     }
+
     /**
-     * 用来设置学生的缺课成绩
-     * @param sno
+     * 设置学生的缺课信息
+     * @param sno 学号
+     * @param state 0请假，2旷课，3，迟到
+     * @param httpSession
      * @return
      */
     @RequestMapping(value = "/no_subject",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
-    public String noSubject(@RequestParam("sno") String sno,HttpSession httpSession){
+    public String noSubject(@RequestParam("sno") String sno,@RequestParam("state") Integer state,HttpSession httpSession){
         Course course=(Course)httpSession.getAttribute("course");
         Student student=new Student(sno);
-        Absences absences=new Absences(student,String.valueOf(course.getId()),new Date(),1);
+        Absences absences=new Absences(student,String.valueOf(course.getId()),new Date(),state);
         absencesService.save(absences);
         return sno;
     }
@@ -90,5 +98,22 @@ public class DataController {
     public List<Absences> findByCourse(@PathVariable("course") String course){
         List<Absences> absences=absencesService.findByCourse(course);
         return absences;
+    }
+
+    /**
+     * 用来将教师的微信id和用户名绑定，同时将openid和用户名绑定
+     * @param openid openid
+     * @param id 用户id
+     * @return 绑定的课程数
+     */
+    @RequestMapping(value = "/setopenid",method = RequestMethod.POST)
+    public int bind_openid(@RequestParam("openid") String openid,@RequestParam("id") int id){
+        Teacher teacher=teacherService.findById(id);
+        int count=courseService.updateOpenid(openid,teacher.getCollege(),teacher.getName());
+        if (count>0){
+            teacherService.setOpenid(id,openid);
+
+        }
+        return count;
     }
 }

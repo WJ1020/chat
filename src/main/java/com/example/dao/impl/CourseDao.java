@@ -60,6 +60,25 @@ public class CourseDao {
         List<Course> courses=this.jdbcTemplate.query(sql,new Object[]{openid,i},rowMapper);
         return courses;
     }
+    //根据教师和学院查询
+    public List<Course> findNameCollege(String teacherName,String college){
+        String sql="SELECT id,openid,name,college,major,grade,teacherName,count FROM Course WHERE teacherName=? AND college=?";
+        RowMapper<Course> rowMapper=new BeanPropertyRowMapper<>(Course.class);
+        List<Course> courses=this.jdbcTemplate.query(sql,new Object[]{teacherName,college},rowMapper);
+        return courses;
+    }
+
+    /**
+     * 根据课的任课老师和学院更新openid
+     * @param openid
+     * @param college
+     * @param teacherName
+     * @return
+     */
+    public int updateCourse(String openid,String college,String teacherName){
+        String sql="UPDATE Course SET openid=? WHERE college=? AND teacherName=?";
+        return this.jdbcTemplate.update(sql,openid,college,teacherName);
+    }
 
     public int[] batchUpdateOpenid(List<Course> courses){
         String sql="UPDATE Course SET openid=? WHERE id=?";

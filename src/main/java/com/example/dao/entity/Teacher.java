@@ -16,11 +16,8 @@ public class Teacher {
         this.name = name;
         this.college = college;
     }
+    public Teacher(){
 
-    public Teacher(String openid, String name, String college) {
-        this.openid = openid;
-        this.name = name;
-        this.college = college;
     }
 
     public int getId() {

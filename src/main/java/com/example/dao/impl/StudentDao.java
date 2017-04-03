@@ -37,7 +37,7 @@ public class StudentDao
         return student;
     }
     public List<Student> findByMajor(String major){
-        String sql="SELECT sno,name,";
+        String sql="select sno,name,sex,college,major,grade from Student WHERE major=?";
         RowMapper<Student> rowMapper=new BeanPropertyRowMapper<>(Student.class);
         List<Student> students=this.jdbcTemplate.query(sql,new Object[]{major},rowMapper);
         return students;

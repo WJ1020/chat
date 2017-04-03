@@ -8,6 +8,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by WangShiXiang on 2017/3/26.
  * 教师表
@@ -17,13 +19,13 @@ public class TeacherDao {
 
     @SuppressWarnings("all")
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;;
 
-    private int save(Teacher teacher){
+    public int save(Teacher teacher){
         String sql="INSERT INTO Teacher(openid,name,college)VALUES (?,?,?)";
         return this.jdbcTemplate.update(sql,teacher.getOpenid(),teacher.getName(),teacher.getCollege());
     }
-    private Teacher findById(int id){
+    public Teacher findById(int id){
         Teacher teacher=null;
         String sql="SELECT id,openid,name,college FROM Teacher WHERE id=?";
         try {
@@ -34,7 +36,7 @@ public class TeacherDao {
         }
         return teacher;
     }
-    private Teacher findByOpenid(String openid){
+    public Teacher findByOpenid(String openid){
         Teacher teacher=null;
         String sql="SELECT id,openid,name,college FROM Teacher WHERE openid=?";
         try {
@@ -45,4 +47,15 @@ public class TeacherDao {
         }
         return teacher;
     }
+    public List<Teacher> findByName(String name){
+        String sql="SELECT id,openid,name,college FROM Teacher WHERE name=?";
+        RowMapper<Teacher> rowMapper=new BeanPropertyRowMapper<>(Teacher.class);
+        List<Teacher> teachers=this.jdbcTemplate.query(sql,new Object[]{name},rowMapper);
+        return teachers;
+    }
+    public int setOpenid(int id,String openid){
+        String sql="UPDATE Teacher SET openid=? WHERE id=?";
+        return this.jdbcTemplate.update(sql,openid,id);
+    }
+
 }
