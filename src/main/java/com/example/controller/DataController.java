@@ -1,13 +1,7 @@
 package com.example.controller;
 
-import com.example.dao.entity.Absences;
-import com.example.dao.entity.Course;
-import com.example.dao.entity.Student;
-import com.example.dao.entity.Teacher;
-import com.example.service.DBService.AbsencesService;
-import com.example.service.DBService.CourseService;
-import com.example.service.DBService.StudentService;
-import com.example.service.DBService.TeacherService;
+import com.example.dao.entity.*;
+import com.example.service.DBService.*;
 import com.example.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by WangShiXiang on 2017/3/17.
@@ -31,6 +26,8 @@ public class DataController {
     private CourseService courseService;
     @Autowired
     private TeacherService teacherService;
+    @Autowired
+    private StudentScoreService studentScoreService;
 
     /**
      * 查询学生表的全部的学生
@@ -53,11 +50,41 @@ public class DataController {
         List<Student> students=null;
         List<Course> courses=this.courseService.findNowCourse(openid, TimeUtil.getSection());
         if (courses.size()>0){
-            students=this.studentService.findByMajor(courses.get(0).getMajor());
+            students=this.studentService.findByMajorAndGrade(courses.get(0).getMajor(),courses.get(0).getGrade());
             httpSession.setAttribute("course",courses.get(0));
             return students;
         }
         return students;
+    }
+    //随机点名
+    @RequestMapping(value = "/randomstudent",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    public Student findRandomStudent(@RequestParam("openid") String openid, HttpSession httpSession){
+        List<Student> students=null;
+        List<Course> courses=this.courseService.findNowCourse(openid, TimeUtil.getSection());
+        if (courses.size()>0){
+            students=this.studentService.findByMajorAndGrade(courses.get(0).getMajor(),courses.get(0).getGrade());
+            httpSession.setAttribute("course",courses.get(0));
+            if (students.size()>0){
+                int randomCount=(int)(Math.random()*students.size());
+                return students.get(randomCount);
+            }
+        }
+        return null;
+    }
+    //来给学生打分
+    @RequestMapping(value="/setstudentscore",method = RequestMethod.PUT)
+    public int setStudentScore(@RequestParam("openid") String openid,@RequestParam("student_name") String name,@RequestParam("student_sno") String sno,@RequestParam("student_score") int score,HttpSession httpSession){
+        Course course=(Course) httpSession.getAttribute("course");
+        StudentScore studentScore=new StudentScore(openid,course.getMajor(),course.getName(),sno,name,score);
+        studentScoreService.save(studentScore);
+        return score;
+    }
+    //查看学生打分情况
+    @RequestMapping(value = "/findstudentscore",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    public List<StudentScore> findByStudentScoreOpenidAndId(@RequestParam("course_id") int id){
+        Course course=courseService.findById(id);
+        List<StudentScore> studentScores=studentScoreService.findByOpenidAndCourseName(course.getOpenid(),course.getName(),course.getMajor());
+        return studentScores;
     }
     @RequestMapping(value = "/student/{sno}",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public Student findBySno(@PathVariable("sno") String sno){
@@ -90,10 +117,12 @@ public class DataController {
         absencesService.save(absences);
         return sno;
     }
+    //查看所有缺课学生
     @RequestMapping(value = "/absences",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public List<Absences> findAllAbsences(){
         return absencesService.findAll();
     }
+    //根据课程id
     @RequestMapping(value = "/find_course/{course}",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public List<Absences> findByCourse(@PathVariable("course") String course){
         List<Absences> absences=absencesService.findByCourse(course);
@@ -106,14 +135,34 @@ public class DataController {
      * @param id 用户id
      * @return 绑定的课程数
      */
-    @RequestMapping(value = "/setopenid",method = RequestMethod.POST)
+    @RequestMapping(value = "/setopenid",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
     public int bind_openid(@RequestParam("openid") String openid,@RequestParam("id") int id){
         Teacher teacher=teacherService.findById(id);
         int count=courseService.updateOpenid(openid,teacher.getCollege(),teacher.getName());
         if (count>0){
             teacherService.setOpenid(id,openid);
-
         }
         return count;
     }
+
+    @RequestMapping(value = "/findcoursebyopenid",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    public List<Course> findCourseByOpenid(@RequestParam("openid") String openid){
+        return courseService.findCourseByOpenid(openid);
+    }
+    //根据其中一个课程的id查询到所有的课
+    @RequestMapping(value = "/findabsencesstudent",method = RequestMethod.GET,produces = "application/json;charset=UTF-8" )
+    public List<Absences> findByAbsencesStudent(int id){
+        List<Course> courses=courseService.findCourseAllByid(id);
+        List<Absences> absences=null;
+        for (Course course:courses){
+            if (absences==null){
+                absences=absencesService.findByCourse(String.valueOf(course.getId()));
+            }else {
+                List<Absences> a=absencesService.findByCourse(String.valueOf(course.getId()));
+                absences.addAll(a);
+            }
+        }
+        return absences;
+    }
+
 }

@@ -22,8 +22,10 @@ public class Course {
     private String teacherName;
     //节次(默认一天四节课，从周一开始计数到20)
     private int count;
+    //上课地点
+    private String locale;
 
-    public Course(int id, String openid, String name, String college, String major, String grade, String teacherName, int count) {
+    public Course(int id, String openid, String name, String college, String major, String grade, String teacherName, int count, String locale) {
         this.id = id;
         this.openid = openid;
         this.name = name;
@@ -32,7 +34,9 @@ public class Course {
         this.grade = grade;
         this.teacherName = teacherName;
         this.count = count;
+        this.locale = locale;
     }
+
     public Course(){
 
     }
@@ -99,5 +103,13 @@ public class Course {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
     }
 }

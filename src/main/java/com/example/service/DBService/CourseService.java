@@ -37,6 +37,12 @@ public class CourseService {
     public int updateOpenid(String openid,String college,String teacherName){
         return courseDao.updateCourse(openid,college,teacherName);
     }
+    public List<Course> findCourseByOpenid(String openid){
+        return courseDao.findCourseByOpenid(openid);
+    }
+    public List<Course> findCourseAllByid(int id){
+        return courseDao.findCourseAllByid(id);
+    }
 
     public void batchUpdate(List<Course> courses){
         courseDao.batchUpdateOpenid(courses);

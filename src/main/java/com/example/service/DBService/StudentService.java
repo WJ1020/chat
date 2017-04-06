@@ -34,4 +34,7 @@ public class StudentService {
     public List<Student> findByMajor(String major){
         return this.studentDao.findByMajor(major);
     }
+    public List<Student> findByMajorAndGrade(String major,String grade){
+        return this.studentDao.findByMajorAndGrade(major,grade);
+    }
 }

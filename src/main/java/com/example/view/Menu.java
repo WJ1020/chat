@@ -11,7 +11,6 @@ import javax.annotation.PostConstruct;
  * Created by WangShiXiang on 2017/3/10.
  * 菜单类
  */
-@Component
 public class Menu {
     @Autowired
     private ConfigService configService;
@@ -27,13 +26,13 @@ public class Menu {
             "                }, \n" +
             "                {\n" +
             "                    \"type\": \"view\", \n" +
-            "                    \"name\": \"随机提问\", \n" +
-            "                    \"url\": \"http://v.qq.com/\"\n" +
+            "                    \"name\": \"缺课名单\", \n" +
+            "                    \"url\": \"http://www.wodeschool.cn/view/absences\"\n" +
             "                }, \n" +
             "                {\n" +
-            "                    \"type\": \"click\", \n" +
-            "                    \"name\": \"我的课程\", \n" +
-            "                    \"key\": \"V1001_GOOD\"\n" +
+            "                    \"type\": \"view\", \n" +
+            "                    \"name\": \"随机点名\", \n" +
+            "                    \"url\": \"http://www.wodeschool.cn/view/callname\"\n" +
             "                }\n" +
             "            ]\n" +
             "        }, \n" +
@@ -59,9 +58,9 @@ public class Menu {
             "        }\n" +
             "    ]\n" +
             "}";
-//    @PostConstruct
-    public void init(){
-        String url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=f5Wqi6s9jO6z1LkBL5Zjjld3zZvDGE3bF1pGtppPUIAXTLIzObJcX3qaKc6CTgxJ4aZ0Yk2h5YoiH5CW6rHCRvpsYdp_9GKJ_FnD3ZS2lMKm4CAz7EKZMTIr0VBjWz9iTUAfADAABH";
+
+    public static void main(String[] args){
+        String url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=fZbsQfkJx2oQENmjQF7px5H0CnIX3P2VwnNV12Z79zLgTwGZTJfuwjWTgt-ecLG0k8MAoe_Xb2BU2A58oI4CdzxOpZ9hhGcH1YluYToRJ46t9XkucgeSKROkkXrz-pZ2IZFdAEAULR";
        String str=HttpUtil.postDownloadJson(url,menu);
        System.out.println(str);
     }

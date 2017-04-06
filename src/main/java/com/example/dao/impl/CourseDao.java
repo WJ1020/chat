@@ -26,14 +26,14 @@ public class CourseDao {
     private JdbcTemplate jdbcTemplate;
 
     public int save(Course course){
-        String sql="INSERT INTO Course (openid,name,college,major,grade,teacherName,count) VALUES (?,?,?,?,?,?,?)";
-        return this.jdbcTemplate.update(sql,course.getOpenid(),course.getName(),course.getCollege(),course.getMajor(),course.getGrade(),course.getTeacherName(),course.getCount());
+        String sql="INSERT INTO Course (openid,name,college,major,grade,teacherName,count,locale) VALUES (?,?,?,?,?,?,?,?)";
+        return this.jdbcTemplate.update(sql,course.getOpenid(),course.getName(),course.getCollege(),course.getMajor(),course.getGrade(),course.getTeacherName(),course.getCount(),course.getLocale());
     }
 
     public Course findById(int id){
         Course course=null;
         try{
-            String sql="SELECT id,openid,name,college,major,grade,teacherName,count FROM Course WHERE id=?";
+            String sql="SELECT id,openid,name,college,major,grade,teacherName,count,locale FROM Course WHERE id=?";
             RowMapper<Course> rowMapper=new BeanPropertyRowMapper<>(Course.class);
             course=this.jdbcTemplate.queryForObject(sql,new Object[]{id},rowMapper);
         }catch (EmptyResultDataAccessException e){
@@ -42,7 +42,7 @@ public class CourseDao {
         return course;
     }
     public List<Course> findByOpenid(String openid){
-        String sql="SELECT id,openid,name,college,major,grade,teacherName,count FROM Course WHERE openid=?";
+        String sql="SELECT id,openid,name,college,major,grade,teacherName,count,locale FROM Course WHERE openid=?";
         RowMapper<Course> rowMapper=new BeanPropertyRowMapper<>(Course.class);
         List<Course> courses=this.jdbcTemplate.query(sql,new Object[]{openid},rowMapper);
         return courses;
@@ -55,19 +55,25 @@ public class CourseDao {
      * @return
      */
     public List<Course> findNowCourse(String openid,int i){
-        String sql="SELECT id,openid,name,college,major,grade,teacherName,count FROM Course WHERE openid=? AND count=?";
+        String sql="SELECT id,openid,name,college,major,grade,teacherName,count,locale FROM Course WHERE openid=? AND count=?";
         RowMapper<Course> rowMapper=new BeanPropertyRowMapper<>(Course.class);
         List<Course> courses=this.jdbcTemplate.query(sql,new Object[]{openid,i},rowMapper);
         return courses;
     }
     //根据教师和学院查询
     public List<Course> findNameCollege(String teacherName,String college){
-        String sql="SELECT id,openid,name,college,major,grade,teacherName,count FROM Course WHERE teacherName=? AND college=?";
+        String sql="SELECT id,openid,name,college,major,grade,teacherName,count,locale FROM Course WHERE teacherName=? AND college=?";
         RowMapper<Course> rowMapper=new BeanPropertyRowMapper<>(Course.class);
         List<Course> courses=this.jdbcTemplate.query(sql,new Object[]{teacherName,college},rowMapper);
         return courses;
     }
-
+    //用来查询教师的所有课程信息(筛选出重复信息)
+    public List<Course> findCourseByOpenid(String openid){
+        String sql=" SELECT a.id,a.openid,a.name,a.college,a.major,a.grade,a.teacherName,a.count,a.locale FROM Course a WHERE a.id=(SELECT max(id) FROM Course WHERE a.name=name)  and a.openid=?";
+        RowMapper<Course> rowMapper=new BeanPropertyRowMapper<>(Course.class);
+        List<Course> courses=this.jdbcTemplate.query(sql,new Object[]{openid},rowMapper);
+        return courses;
+    }
     /**
      * 根据课的任课老师和学院更新openid
      * @param openid
@@ -78,6 +84,13 @@ public class CourseDao {
     public int updateCourse(String openid,String college,String teacherName){
         String sql="UPDATE Course SET openid=? WHERE college=? AND teacherName=?";
         return this.jdbcTemplate.update(sql,openid,college,teacherName);
+    }
+    //根据id查询所有
+    public List<Course> findCourseAllByid(int id){
+        String sql="SELECT a.id,a.openid,a.name,a.college,a.major,a.grade,a.teacherName,a.count,a.locale FROM Course a ,Course b WHERE a.name=b.name AND a.major=b.major AND b.id=?";
+        RowMapper<Course> rowMapper=new BeanPropertyRowMapper<>(Course.class);
+        List<Course> courses=this.jdbcTemplate.query(sql,new Object[]{id},rowMapper);
+        return courses;
     }
 
     public int[] batchUpdateOpenid(List<Course> courses){

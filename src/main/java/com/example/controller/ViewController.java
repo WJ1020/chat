@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.dao.entity.SNSUserInfo;
+import com.example.dao.entity.Student;
 import com.example.dao.entity.Teacher;
 import com.example.entity.CLICKMessage;
 import com.example.entity.WXJsConfig;
@@ -77,5 +78,22 @@ public class ViewController {
     public String bindIOpenid(){
         return "bindopenid";
     }
+    @RequestMapping(value="/absences",method = RequestMethod.GET)
+    public String absences(){
+        return "absences";
+    }
 
+    //跳转缺课
+    @RequestMapping(value = "/absencesstudent",method = RequestMethod.GET)
+    public String absences_student(){
+        return "absencesstudent";
+    }
+    @RequestMapping(value = "/callname",method = RequestMethod.GET)
+    public String returnCallName(){
+        return "callname";
+    }
+    @RequestMapping(value = "/callnamescore",method = RequestMethod.GET)
+    public String returnCallNameScore(){
+        return "callnamescore";
+    }
 }

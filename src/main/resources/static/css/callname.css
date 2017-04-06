@@ -1,0 +1,17 @@
+.div_button{
+    position:fixed;
+    width: 98%;
+    left: 1%;
+    bottom: 15px;
+}
+#studentmsg{
+    position: relative;
+    text-align: center;
+    top:10%;
+    font-family : 微软雅黑,宋体;
+    font-size : 1rem;
+    color : #000000;
+}
+#callnameScore{
+    width: 100%;
+}

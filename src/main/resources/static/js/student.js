@@ -59,7 +59,6 @@ function postTwo_Sno(str) {
             div_element.style.backgroundColor="#B5B5B5";
             var p= $(div_element).find("p")[0];
             $(p).css("color","red");
-
         }
     })
 }
@@ -91,7 +90,7 @@ function findStudent() {
             console.log("状态码为:"+XMLHttpRequest.readyState);
                 //如果没有信息时怎么做,分为两种情况，现在没课，没有绑定.
                 $.modal({
-                    title: '没有检索的学生列表',
+                    title: '没有检索到学生列表',
                     text: '可能出现的原因:当前不在上课时间内；第一次使用本系统' +
                     '未绑定',
                     buttons:[
@@ -119,6 +118,9 @@ var openId=getCookie("openid");
 if (openId==null||openId==""){
     jump_author();
 }else {
+    var date=new Date();
+    date.setTime(date.getTime()+60*60*1000*24*20);
+    document.cookie="openid="+openId+";expires="+date.toGMTString();
     findStudent();
 }
 

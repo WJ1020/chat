@@ -42,6 +42,12 @@ public class StudentDao
         List<Student> students=this.jdbcTemplate.query(sql,new Object[]{major},rowMapper);
         return students;
     }
+    public List<Student> findByMajorAndGrade(String major,String grade){
+        String sql="select sno,name,sex,college,major,grade from Student WHERE major=? AND grade=?";
+        RowMapper<Student> rowMapper=new BeanPropertyRowMapper<>(Student.class);
+        List<Student> students=this.jdbcTemplate.query(sql,new Object[]{major,grade},rowMapper);
+        return students;
+    }
     public List<Student> findAll(){
         String sql="select sno,name,sex,college,major,grade from Student";
         RowMapper<Student> rowMapper=new BeanPropertyRowMapper<>(Student.class);

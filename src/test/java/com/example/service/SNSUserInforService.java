@@ -17,15 +17,15 @@ import java.util.LinkedList;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class SNSUserInforService {
-    @Autowired
-    private SNSUserInfoService snsUserInfoService;
-    @Test
-    public void SNSUserInfoDaoTest(){
-        SNSUserInfo snsUserInfo=new SNSUserInfo("oJ-Atw-BIhBu1XbwzJ0T0lduNzqk","2",1,"4","5","6","7",new LinkedList<String>(),"9");
-        System.out.println(snsUserInfoService);
-        snsUserInfoService.save(snsUserInfo);
-        SNSUserInfo snsUserInfo1=snsUserInfoService.findByOpenId("1");
-        System.out.println(snsUserInfo1.getOpenid());
-
-    }
+//    @Autowired
+//    private SNSUserInfoService snsUserInfoService;
+//    @Test
+//    public void SNSUserInfoDaoTest(){
+//        SNSUserInfo snsUserInfo=new SNSUserInfo("oJ-Atw-BIhBu1XbwzJ0T0lduNzqk","2",1,"4","5","6","7",new LinkedList<String>(),"9");
+//        System.out.println(snsUserInfoService);
+//        snsUserInfoService.save(snsUserInfo);
+//        SNSUserInfo snsUserInfo1=snsUserInfoService.findByOpenId("1");
+//        System.out.println(snsUserInfo1.getOpenid());
+//
+//    }
 }
