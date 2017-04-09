@@ -1,5 +1,7 @@
 package com.example.util;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,7 +12,7 @@ import java.util.Date;
  */
 public class TimeUtil {
 
-    //返回周几
+    //返回一周中的第几天
     public static int getSection(){
         Calendar calendar=Calendar.getInstance();
         calendar.setTime(new Date());
@@ -22,6 +24,11 @@ public class TimeUtil {
 
     private static int getDaySection(){
         LocalTime localTime=LocalTime.now();
+        //每节课的起始时间，都会提前十分钟
+        return getSection(localTime);
+    }
+    //第几节
+    private static int getSection(LocalTime localTime){
         //每节课的起始时间，都会提前十分钟
         LocalTime oneSection=LocalTime.of(8,00);
         LocalTime twoSection=LocalTime.of(9,50);
@@ -41,7 +48,18 @@ public class TimeUtil {
         }
     }
 
+    public static int getSpecifyTimeSection(LocalDateTime localDateTime){
+        DayOfWeek dayOfWeek=localDateTime.getDayOfWeek();
+        int count=(dayOfWeek.getValue()-1)*4+getSection(localDateTime.toLocalTime());
+        return count;
+    }
+
     public static void main(String[] args){
-        System.out.println(getSection());
+
+        String dat="2017-04-09-13-35";
+        String[] date=dat.split("-");
+        LocalDateTime localDateTime=LocalDateTime.of(Integer.parseInt(date[0]),Integer.parseInt(date[1]),Integer.parseInt(date[2]),Integer.parseInt(date[3]),Integer.parseInt(date[4]));
+       System.out.println(getSpecifyTimeSection(localDateTime));
+       System.out.println(getSection());
     }
 }

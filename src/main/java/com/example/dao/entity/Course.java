@@ -112,4 +112,9 @@ public class Course {
     public void setLocale(String locale) {
         this.locale = locale;
     }
+
+    @Override
+    public String toString() {
+        return getLocale();
+    }
 }

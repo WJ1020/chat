@@ -1,0 +1,9 @@
+#top_div{
+    width: 100%;
+}
+#div_button{
+    position: fixed;
+    bottom: 10px;
+    width: 98%;
+    left: 1%;
+}

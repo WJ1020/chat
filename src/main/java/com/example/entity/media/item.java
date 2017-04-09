@@ -10,6 +10,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
  * 多条图文消息信息
  */
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE)
+@JsonRootName("item")
 public class item {
     @JacksonXmlProperty
     private String Title;

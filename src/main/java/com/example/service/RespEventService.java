@@ -18,12 +18,12 @@ public class RespEventService {
     public Object event(CLICKMessage message){
         TextRespMessage textRespMessage=new TextRespMessage(message.getFromUserName(),message.getToUserName(),message.getCreateTime(),"text","你点击了测试按钮");
       String url="http:\\/\\/mmbiz.qpic.cn\\/mmbiz_jpg\\/kibiaLzwGVAUlFW8ic445zp9IQibuCF1ntn4W2KvE6XXcg41z1wicb7sibz2hzoHicrpMUpCTF3jlkhvPd3BzZVIrEI7A\\/0";
-        item item=new item("测试消息","这是测试图文消息和自定义事件",url,"https://www.baidu.com");
-        List<item> items=new LinkedList<>();
-        items.add(item);
-        Articles articles=new Articles(items);
-        NewsRespMessage newsRespMessage=new NewsRespMessage(message.getFromUserName(),message.getToUserName(),message.getCreateTime(),"news",1,articles);
-        return newsRespMessage;
+//        item item=new item("测试消息","这是测试图文消息和自定义事件",url,"https://www.baidu.com");
+//        List<item> items=new LinkedList<>();
+//        items.add(item);
+//        Articles articles=new Articles(items);
+//        NewsRespMessage newsRespMessage=new NewsRespMessage(message.getFromUserName(),message.getToUserName(),message.getCreateTime(),"news",1,articles);
+        return null;
     }
     //扫码事件
     public Object event(ScanMessage message){

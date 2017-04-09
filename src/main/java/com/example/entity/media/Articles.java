@@ -15,8 +15,8 @@ import java.util.List;
 @JsonRootName("Articles")
 public class Articles {
     @JacksonXmlProperty
-    private List<item> item;
-    public Articles(List<com.example.entity.media.item> item) {
+    private List<Items> item;
+    public Articles(List<Items> item) {
         this.item = item;
     }
 }

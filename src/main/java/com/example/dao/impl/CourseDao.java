@@ -92,7 +92,18 @@ public class CourseDao {
         List<Course> courses=this.jdbcTemplate.query(sql,new Object[]{id},rowMapper);
         return courses;
     }
-
+    public List<Course> findByCount(int count){
+        String sql="SELECT id,openid,name,college,major,grade,teacherName,count,locale FROM Course WHERE count=?";
+        RowMapper<Course> rowMapper=new BeanPropertyRowMapper<>(Course.class);
+        List<Course> courses=this.jdbcTemplate.query(sql,new Object[]{count},rowMapper);
+        return courses;
+    }
+    public List<Course> findAll(){
+        String sql="SELECT id,openid,name,college,major,grade,teacherName,count,locale FROM Course";
+        RowMapper<Course> rowMapper=new BeanPropertyRowMapper<>(Course.class);
+        List<Course> courses=this.jdbcTemplate.query(sql,rowMapper);
+        return courses;
+    }
     public int[] batchUpdateOpenid(List<Course> courses){
         String sql="UPDATE Course SET openid=? WHERE id=?";
         int[] updateCounts=jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {

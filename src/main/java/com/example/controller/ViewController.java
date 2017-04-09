@@ -4,7 +4,11 @@ import com.example.dao.entity.SNSUserInfo;
 import com.example.dao.entity.Student;
 import com.example.dao.entity.Teacher;
 import com.example.entity.CLICKMessage;
+import com.example.entity.NewsRespMessage;
 import com.example.entity.WXJsConfig;
+import com.example.entity.media.Articles;
+import com.example.entity.media.Items;
+import com.example.entity.media.item;
 import com.example.service.ConfigService;
 import com.example.service.DBService.TeacherService;
 import com.example.service.JSApiService;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -96,4 +101,25 @@ public class ViewController {
     public String returnCallNameScore(){
         return "callnamescore";
     }
+    @RequestMapping(value = "/classroom",method = RequestMethod.GET)
+    public String returnClassRoom(){
+        return "classroom";
+    }
+    @RequestMapping(value = "/classtable",method = RequestMethod.GET)
+    public String returnClassTable(){
+        return "classtable";
+    }
+//    @RequestMapping(value = "testXml",method = RequestMethod.GET)
+//    @ResponseBody
+//    public Object testXml(){
+//        item item=new item("测试消息","内容","http://","https://www.baidu.com");
+////        Items items=new Items(item);
+////        List<Items> itemss=new ArrayList<>();
+////        itemss.add(items);
+////        Articles articles=new Articles(itemss);
+//        List<item> items=new ArrayList<>();
+//        NewsRespMessage newsRespMessage=new NewsRespMessage("123","321",1,"text",1,items);
+//        return newsRespMessage;
+//    }
+
 }

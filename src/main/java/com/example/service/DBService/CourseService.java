@@ -43,7 +43,9 @@ public class CourseService {
     public List<Course> findCourseAllByid(int id){
         return courseDao.findCourseAllByid(id);
     }
-
+    public List<Course> findByCount(int count){
+        return courseDao.findByCount(count);
+    }
     public void batchUpdate(List<Course> courses){
         courseDao.batchUpdateOpenid(courses);
     }

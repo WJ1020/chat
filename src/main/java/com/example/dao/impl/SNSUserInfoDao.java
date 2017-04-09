@@ -40,7 +40,7 @@ public class SNSUserInfoDao {
             String sql="SELECT  openid,nickname,sex,province,city,country,headimgurl,privilege,unionid FROM SNSUserInfo WHERE openid=?";
             snsUserInfo= this.jdbcTemplate.queryForObject(sql,new Object[]{openid},new SNSUserInfoDaoMapper());
         }catch (EmptyResultDataAccessException e){
-
+                e.printStackTrace();
         }
         return snsUserInfo;
     }

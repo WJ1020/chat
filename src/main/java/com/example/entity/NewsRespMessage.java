@@ -27,9 +27,9 @@ public class NewsRespMessage {
     private int ArticleCont;
 
     @JacksonXmlProperty
-    private Articles Articles;
+    private List<item> Articles;
 
-    public NewsRespMessage(String toUserName, String fromUserName, int createTime, String msgType, int articleCont, com.example.entity.media.Articles articles) {
+    public NewsRespMessage(String toUserName, String fromUserName, int createTime, String msgType, int articleCont, List<item> articles) {
         ToUserName = toUserName;
         FromUserName = fromUserName;
         CreateTime = createTime;

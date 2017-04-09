@@ -7,13 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 /**
  * Created by WangShiXiang on 2017/3/17.
- * 对RESTFUL风格的请求进行处理。
+ * 对数据进行处理
  */
 @RestController
 @RequestMapping("data")
@@ -28,6 +29,8 @@ public class DataController {
     private TeacherService teacherService;
     @Autowired
     private StudentScoreService studentScoreService;
+    @Autowired
+    private ClassRoomService classRoomService;
 
     /**
      * 查询学生表的全部的学生
@@ -164,5 +167,32 @@ public class DataController {
         }
         return absences;
     }
-
+    @RequestMapping(value="/findclassroomall",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    public List<ClassRoom> findByClassRoomAll(){
+        return classRoomService.findAll();
+    }
+    //查询当时的空闲教室
+    @RequestMapping(value = "/findfreeclassroom",method =RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    public List<ClassRoom> findFreeClassRoom(){
+        List<ClassRoom> classRooms=classRoomService.findAll();
+        List<Course> courses=courseService.findByCount(TimeUtil.getSection());
+        classRooms.removeAll(courses);
+        return classRooms;
+    }
+    //根据指定时间查询教室（传入的数据格式为:2017-02-03-12-22 年-月-日-时-分）
+    @RequestMapping(value = "/findspecifytimeclassroom",method =RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    public List<ClassRoom> findSpecifyTimeClassRoom(@RequestParam("date") String str){
+        String[] date=str.split("-");
+        LocalDateTime localDateTime=LocalDateTime.of(Integer.parseInt(date[0]),Integer.parseInt(date[1]),Integer.parseInt(date[2]),Integer.parseInt(date[3]),Integer.parseInt(date[4]));
+        List<ClassRoom> classRooms=classRoomService.findAll();
+        List<Course> courses=courseService.findByCount(TimeUtil.getSpecifyTimeSection(localDateTime));
+        classRooms.removeAll(courses);
+        return classRooms;
+    }
+    //根据openid查询全部的
+    @RequestMapping(value = "/findallcoursebyopenid",method =RequestMethod.GET,produces = "application/json;charset=UTF-8" )
+    public List<Course> findAllCourseByOpenid(String openid){
+        List<Course> courses=courseService.findByOpenId(openid);
+        return courses;
+    }
 }
