@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.dao.entity.*;
 import com.example.service.DBService.*;
+import com.example.service.SendShortMessage;
 import com.example.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,8 @@ public class DataController {
     private StudentScoreService studentScoreService;
     @Autowired
     private ClassRoomService classRoomService;
+    @Autowired
+    private SendShortMessage sendShortMessage;
 
     /**
      * 查询学生表的全部的学生
@@ -194,5 +197,10 @@ public class DataController {
     public List<Course> findAllCourseByOpenid(String openid){
         List<Course> courses=courseService.findByOpenId(openid);
         return courses;
+    }
+    @RequestMapping(value = "/sendshortmessage",method =RequestMethod.POST,produces = "application/json;charset=UTF-8" )
+    public int sendShortMessageUrl(@RequestParam("openid") String openid,@RequestParam("major") String major,@RequestParam("grade") String grade,@RequestParam("text") String text){
+        int count=sendShortMessage.SendMessage(openid,major,grade,text);
+        return count;
     }
 }

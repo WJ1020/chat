@@ -109,6 +109,11 @@ public class ViewController {
     public String returnClassTable(){
         return "classtable";
     }
+    @RequestMapping(value = "/sendshortmessage",method = RequestMethod.GET)
+    public String returnSendShortMessage(){
+        return "sendshortmessage";
+    }
+
 //    @RequestMapping(value = "testXml",method = RequestMethod.GET)
 //    @ResponseBody
 //    public Object testXml(){

@@ -27,5 +27,8 @@ public class TeacherService {
     public int setOpenid(int id,String openid){
         return this.teacherDao.setOpenid(id,openid);
     }
+    public Teacher findByOpenID(String openid){
+        return this.teacherDao.findByOpenid(openid);
+    }
 
 }

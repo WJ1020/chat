@@ -72,21 +72,21 @@ public class Menu {
             "            ]\n" +
             "        }, \n" +
             "        {\n" +
-            "            \"name\": \"校园生活\", \n" +
+            "            \"name\": \"教学教务\", \n" +
             "            \"sub_button\": [\n" +
             "                {\n" +
             "                    \"type\": \"view\", \n" +
-            "                    \"name\": \"故障报修\", \n" +
-            "                    \"url\": \"http://www.baidu.com/\"\n" +
+            "                    \"name\": \"短信通知\", \n" +
+            "                    \"url\": \"http://www.wodeschool.cn/view/sendshortmessage\"\n" +
             "                }, \n" +
             "                {\n" +
             "                    \"type\": \"view\", \n" +
-            "                    \"name\": \"失物招领\", \n" +
+            "                    \"name\": \"邮件通知\", \n" +
             "                    \"url\": \"http://www.zealer.com/\"\n" +
             "                }, \n" +
             "                {\n" +
             "                    \"type\": \"click\", \n" +
-            "                    \"name\": \"校园广播站\", \n" +
+            "                    \"name\": \"测试\", \n" +
             "                    \"key\": \"V1001\"\n" +
             "                }\n" +
             "            ]\n" +
@@ -95,7 +95,7 @@ public class Menu {
             "}";
 
     public static void main(String[] args){
-        String url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=Eqz_XJ08kFU47pAyVHpMpR-SkPREEltvKUC2kR6rlCmjbyt2RmhIH6SADoVu15Xp4UJUrX3U4dP-2imvEqmkwN2dCQMlpt4qyscjStvNet1_aj6UsmDwy8MeGueJWCsgTKKaAEAARR";
+        String url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=-QRYMxPVO4nlYRGfCTGNWexrNRKU_wKqIGXGU3jF-s0W6tw5PqP4ln-sWwAXBH7lEZtE6zMYcedoB2AmlePJig3TWpilkyxEiHlCBR3b_f0TDYdAIAMWR";
        String str=HttpUtil.postDownloadJson(url,menu);
        System.out.println(str);
     }

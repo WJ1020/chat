@@ -13,7 +13,8 @@ import java.net.URLEncoder;
  */
 public class SendShortMessage {
 
-    public static void send(String text,String[] phone){
+    public static int send(String text,String[] phone){
+        int count=0;
         try {
             URL url=new URL("http://utf8.sms.webchinese.cn");
             HttpURLConnection httpURLConnection=(HttpURLConnection) url.openConnection();
@@ -40,16 +41,26 @@ public class SendShortMessage {
 
             BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
             String line;
+            StringBuffer sb=new StringBuffer();
             while ((line=bufferedReader.readLine())!=null){
                 System.out.println(line);
+                sb.append(line);
             }
             bufferedReader.close();
             httpURLConnection.disconnect();
+            try {
+                count=new Integer(sb.toString());
+            }catch (Exception e){
+                count=-1;
+                System.out.println(sb.toString());
+            }
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e){
             e.printStackTrace();
         }
+        return count;
     }
 
 //    public static void main(String[] args){
