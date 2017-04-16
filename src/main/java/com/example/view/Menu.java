@@ -52,17 +52,17 @@ public class Menu {
             "                {\n" +
             "                    \"type\": \"view\", \n" +
             "                    \"name\": \"我要请假\", \n" +
-            "                    \"url\": \"http://www.soso.com/\"\n" +
+            "                    \"url\": \"http://www.wodeschool.cn/view/leave\"\n" +
             "                }, \n" +
             "                {\n" +
             "                    \"type\": \"view\", \n" +
-            "                    \"name\": \"我要销假\", \n" +
-            "                    \"url\": \"http://www.qq.com/\"\n" +
+            "                    \"name\": \"请假回执\", \n" +
+            "                    \"url\": \"http://www.wodeschool.cn/view/leave_1\"\n" +
             "                }, \n" +
             "                {\n" +
-            "                    \"type\": \"click\", \n" +
-            "                    \"name\": \"申请资源\", \n" +
-            "                    \"key\": \"V1001_GOOD\"\n" +
+            "                    \"type\": \"view\", \n" +
+            "                    \"name\": \"请假申请\", \n" +
+            "                    \"url\": \"http://www.wodeschool.cn/view/leave_2\"\n" +
             "                }, \n" +
             "                {\n" +
             "                    \"type\": \"view\", \n" +
@@ -95,7 +95,7 @@ public class Menu {
             "}";
 
     public static void main(String[] args){
-        String url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=-QRYMxPVO4nlYRGfCTGNWexrNRKU_wKqIGXGU3jF-s0W6tw5PqP4ln-sWwAXBH7lEZtE6zMYcedoB2AmlePJig3TWpilkyxEiHlCBR3b_f0TDYdAIAMWR";
+        String url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=39qCM2_6tM9Xldg3_TOf47igm9NbELUkTw99rsakBsqNWO6o0s5jOKuf5UaFBGDY1TmZ0ZNfkovCS47hppN-y31wNfCr9n0evSHZb8W-kT0VNSbAJALDI";
        String str=HttpUtil.postDownloadJson(url,menu);
        System.out.println(str);
     }

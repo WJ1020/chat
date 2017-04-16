@@ -1,8 +1,6 @@
 package com.example.util;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -54,6 +52,16 @@ public class TimeUtil {
         return count;
     }
 
+    public static   Date switchDate(String str){
+        String[] date=str.split("-");
+        LocalDateTime localDateTime=LocalDateTime.of(Integer.parseInt(date[0]),Integer.parseInt(date[1]),Integer.parseInt(date[2]),Integer.parseInt(date[3]),Integer.parseInt(date[4]));
+        ZoneId zoneId=ZoneId.systemDefault();
+        Instant instant=localDateTime.atZone(zoneId).toInstant();
+        Date date1=Date.from(instant);
+        return date1;
+
+    }
+
     public static void main(String[] args){
 
         String dat="2017-04-09-13-35";
@@ -62,4 +70,6 @@ public class TimeUtil {
        System.out.println(getSpecifyTimeSection(localDateTime));
        System.out.println(getSection());
     }
+
+
 }

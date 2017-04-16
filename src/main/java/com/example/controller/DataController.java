@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.dao.entity.*;
+import com.example.entity.LeaveView;
 import com.example.service.DBService.*;
 import com.example.service.SendShortMessage;
 import com.example.util.TimeUtil;
@@ -8,14 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.text.html.ListView;
+import javax.swing.text.html.StyleSheet;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
  * Created by WangShiXiang on 2017/3/17.
  * 对数据进行处理
+ * QQ825305769
  */
 @RestController
 @RequestMapping("data")
@@ -34,6 +41,12 @@ public class DataController {
     private ClassRoomService classRoomService;
     @Autowired
     private SendShortMessage sendShortMessage;
+    @Autowired
+    private LeaveService leaveService;
+    @Autowired
+    private StudentPhoneService studentPhoneService;
+    @Autowired
+    private MentorService mentorService;
 
     /**
      * 查询学生表的全部的学生
@@ -202,5 +215,52 @@ public class DataController {
     public int sendShortMessageUrl(@RequestParam("openid") String openid,@RequestParam("major") String major,@RequestParam("grade") String grade,@RequestParam("text") String text){
         int count=sendShortMessage.SendMessage(openid,major,grade,text);
         return count;
+    }
+    @RequestMapping(value = "/askforleave",method =RequestMethod.PUT,produces = "application/json;charset=UTF-8")
+    public int askForLeave(@RequestBody Map map){
+        Date startDate=TimeUtil.switchDate(map.get("startDate").toString());
+        Date endDate=TimeUtil.switchDate(map.get("endDate").toString());
+        String openid=map.get("openid").toString();
+        StudentPhone studentPhone=studentPhoneService.findByOpenid(openid);
+        if (studentPhone==null){//此处应该重新设计
+            return -1;//不存在 //如果你有幸重写我的代码请务必重写此功能的业务逻辑
+        }
+        Student student=studentService.findBySno(studentPhone.getSno());
+        if (student==null){
+            return -1;
+        }
+        Mentor mentor=mentorService.findByMajorAndGrade(student.getMajor(),student.getGrade());
+        //int id, String openid, String cause, int type, Date startDate, Date endDate, int section, int local_1, String local_2, String urgentName, String urgentPhone
+        Leave leave=new Leave(map.get("openid").toString(),map.get("cause").toString(),Integer.parseInt(map.get("type").toString()),startDate,endDate,Integer.parseInt(map.get("section").toString()),Integer.parseInt(map.get("local_1").toString()),map.get("local_2").toString(),map.get("urgentName").toString(),map.get("urgentPhone").toString(),0);
+        leave.setOpenidTeacher(mentor.getOpenid());
+        int count= leaveService.save(leave);
+        return count;
+    }
+    @RequestMapping(value = "findleavebyopenid",method=RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    public List<Leave> findLeaveByOpenId(@RequestParam("openid") String openid){
+        List<Leave> leaves=leaveService.findByOpenId(openid);
+        return leaves;
+    }
+    @RequestMapping(value = "updateleavestate",method = RequestMethod.POST)
+    public int updateLeaveState(@RequestParam("id") int id,@RequestParam("state") int state){
+        return this.leaveService.update(id,state);
+    }
+    @RequestMapping(value = "/findleavelist",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    public List<LeaveView> findListViewByOpenId(String openid){
+        return this.leaveService.findLeaveViewFindById(openid);
+    }
+    //分页查询
+    @RequestMapping(value="findlimitleavelist",method = RequestMethod.GET ,produces = "application/json;charset=UTF-8")
+    public List<LeaveView> findLimitListViewByOpenid(String openid,int page){
+        return this.leaveService.findByOpenidAndPage(openid,page);
+    }
+    @RequestMapping(value="/findmentorbyname",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    public List<Mentor> findMentorByName(String name){
+        return this.mentorService.findByName(name);
+    }
+    @RequestMapping(value="/bindmentorbyname",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    public int bindMentorOpenid(@RequestParam("name") String name,@RequestParam("openid") String openid){
+
+       return   this.mentorService.update(openid,name);
     }
 }

@@ -22,4 +22,7 @@ public class StudentPhoneService {
     public List<StudentPhone> findMajorAndGrade(String major,String grade){
         return this.studentPhoneDao.findByMajor(major,grade);
     }
+    public StudentPhone findByOpenid(String openid){
+        return this.studentPhoneDao.findByOpenid(openid);
+    }
 }

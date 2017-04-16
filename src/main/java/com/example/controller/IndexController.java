@@ -5,6 +5,7 @@ import com.example.service.MessageService;
 import com.example.service.RespMessage;
 import com.example.util.SignUtil;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -40,5 +41,6 @@ public class IndexController {
         Object object=messageService.typeMessage(map);
         return object;
     }
+
 
 }

@@ -34,7 +34,7 @@ public class SendShortMessage {
             str=str.substring(0,str.length()-1);
             str=URLEncoder.encode(str,"utf-8");
             //http://utf8.sms.webchinese.cn/?Uid=本站用户名&Key=接口安全秘钥&smsMob=手机号码&smsText=验证码:8888
-            String content="Uid="+ URLEncoder.encode("17862901361abc","utf-8")+"&Key="+URLEncoder.encode("","utf-8")+"&smsMob="+str+"&smsText="+URLEncoder.encode(text,"utf-8");
+            String content="Uid="+ URLEncoder.encode("17862901361abc","utf-8")+"&Key="+URLEncoder.encode("38f54c3f7658482f3126","utf-8")+"&smsMob="+str+"&smsText="+URLEncoder.encode(text,"utf-8");
             outputStream.writeBytes(content);
             outputStream.flush();
             outputStream.close();

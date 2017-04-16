@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>智慧山体</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"/>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js "></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css"/>
+    <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css"/>
+</head>
+<body>
+
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <textarea id="cause" class="weui-textarea" placeholder="请输入请假原因" rows="5"></textarea>
+        </div>
+    </div>
+</div>
+<div class="weui-cell weui-cell_select">
+    <div class="weui-cell__bd">
+        <select class="weui-select" name="select1" id="type">
+            <option selected="" value="">请假类型</option>
+            <option value="0">病假</option>
+            <option value="1">事假</option>
+            <option value="2">其他假</option>
+        </select>
+    </div>
+</div>
+<br/>
+<!--<div class="weui-cells__title">选择请假开始时间</div>-->
+<div class="weui-cells">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <input id="start_time" class="weui-input" type="text" placeholder="点击选择开始时间"/>
+        </div>
+    </div>
+</div>
+<!--<div class="weui-cells__title">选择请假结束时间</div>-->
+<div class="weui-cells">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <input id="end_time" class="weui-input" type="text" placeholder="点击选择结束时间"/>
+        </div>
+    </div>
+</div>
+<div class="weui-cells__title">请输入请假节次</div>
+<div class="weui-cells">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <input id="section" class="weui-input" type="text" placeholder="节次"/>
+        </div>
+    </div>
+</div>
+<br/>
+<!--<div class="weui-cells__title">外出地点</div>-->
+<div class="weui-cell weui-cell_select">
+    <div class="weui-cell__bd">
+        <select class="weui-select" name="select1" id="local_1">
+            <option selected="" value="">选择外出地点</option>
+            <option value="0">校内</option>
+            <option value="1">校外</option>
+        </select>
+    </div>
+</div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <textarea id="local_2" class="weui-textarea" placeholder="输入详细地址" rows="5"></textarea>
+        </div>
+    </div>
+</div>
+<br/>
+<div class="weui-cells">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <input id="instancy_name" class="weui-input" type="text" placeholder="紧急联系人姓名"/>
+            <div class="weui-cells__title"></div>
+            <input id="instancy_phone" class="weui-input" type="text" placeholder="紧急联系人号码"/>
+        </div>
+    </div>
+</div>
+<br/>
+<a style="position: relative; width: 98%; margin: 0 auto" href="javascript:createJson();" class="weui-btn weui-btn_primary">提交申请</a>
+<br/>
+</body>
+<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
+<script type="text/javascript" src="../static/js/leave.js" th:src="@{/js/leave.js}"></script>
+<script>addEvent()</script>
+</html>

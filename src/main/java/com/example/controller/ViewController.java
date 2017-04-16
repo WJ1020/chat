@@ -60,6 +60,27 @@ public class ViewController {
         }
         return "student";
     }
+    //学生绑定
+    @RequestMapping(value = "bindmentor",method = RequestMethod.GET)
+    public String bind(@RequestParam(value = "code",required = false) String code, HttpServletResponse httpServletResponse){
+        if (code!=null){
+            //首先获取
+            Map<String,String> map= OAuth.getAccessToken(ConfigService.getAppid(),ConfigService.getSecret(),code);
+            if(map!=null){
+                String userAccess_token=map.get("access_token");
+                String openID=map.get("openid");
+                Cookie cookie=new Cookie("openid",openID);
+                httpServletResponse.addCookie(cookie);
+                SNSUserInfo snsUserInfo=OAuth.getUserInfo(userAccess_token,openID);
+                if (snsUserInfo!=null){
+                    snsUserInfoService.save(snsUserInfo);
+                }else {
+                    System.out.println("获取不到用户的详细信息");
+                }
+            }
+        }
+        return "bindmentor";
+    }
 
 
 
@@ -87,7 +108,6 @@ public class ViewController {
     public String absences(){
         return "absences";
     }
-
     //跳转缺课
     @RequestMapping(value = "/absencesstudent",method = RequestMethod.GET)
     public String absences_student(){
@@ -112,6 +132,19 @@ public class ViewController {
     @RequestMapping(value = "/sendshortmessage",method = RequestMethod.GET)
     public String returnSendShortMessage(){
         return "sendshortmessage";
+    }
+
+    @RequestMapping(value="leave",method = RequestMethod.GET)
+    public String returnLeave(){
+        return "leave";
+    }
+    @RequestMapping(value="leave_1",method = RequestMethod.GET)
+    public String returnLeave1(){
+        return "leave_1";
+    }
+    @RequestMapping(value="leave_2",method = RequestMethod.GET)
+    public String returnLeave2(){
+        return "leave_2";
     }
 
 //    @RequestMapping(value = "testXml",method = RequestMethod.GET)
