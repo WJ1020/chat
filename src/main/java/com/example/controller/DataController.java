@@ -9,15 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import javax.swing.text.html.ListView;
-import javax.swing.text.html.StyleSheet;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * Created by WangShiXiang on 2017/3/17.
@@ -27,26 +22,66 @@ import java.util.Random;
 @RestController
 @RequestMapping("data")
 public class DataController {
-    @Autowired
+
     private StudentService studentService;
-    @Autowired
+
     private AbsencesService absencesService;
-    @Autowired
+
     private CourseService courseService;
-    @Autowired
+
     private TeacherService teacherService;
-    @Autowired
+
     private StudentScoreService studentScoreService;
-    @Autowired
+
     private ClassRoomService classRoomService;
-    @Autowired
+
     private SendShortMessage sendShortMessage;
-    @Autowired
+
     private LeaveService leaveService;
-    @Autowired
+
     private StudentPhoneService studentPhoneService;
-    @Autowired
+
     private MentorService mentorService;
+    @Autowired
+    public void setStudentService(StudentService studentService) {
+        this.studentService = studentService;
+    }
+    @Autowired
+    public void setAbsencesService(AbsencesService absencesService) {
+        this.absencesService = absencesService;
+    }
+    @Autowired
+    public void setCourseService(CourseService courseService) {
+        this.courseService = courseService;
+    }
+    @Autowired
+    public void setTeacherService(TeacherService teacherService) {
+        this.teacherService = teacherService;
+    }
+    @Autowired
+    public void setStudentScoreService(StudentScoreService studentScoreService) {
+        this.studentScoreService = studentScoreService;
+    }
+    @Autowired
+    public void setClassRoomService(ClassRoomService classRoomService) {
+        this.classRoomService = classRoomService;
+    }
+    @Autowired
+    public void setSendShortMessage(SendShortMessage sendShortMessage) {
+        this.sendShortMessage = sendShortMessage;
+    }
+    @Autowired
+    public void setLeaveService(LeaveService leaveService) {
+        this.leaveService = leaveService;
+    }
+    @Autowired
+    public void setStudentPhoneService(StudentPhoneService studentPhoneService) {
+        this.studentPhoneService = studentPhoneService;
+    }
+    @Autowired
+    public void setMentorService(MentorService mentorService) {
+        this.mentorService = mentorService;
+    }
 
     /**
      * 查询学生表的全部的学生
@@ -54,34 +89,31 @@ public class DataController {
      */
     @RequestMapping(value = "/student",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public List<Student> findAllStudent(){
-        List<Student> students=this.studentService.findAll();
-        return students;
+        return this.studentService.findAll();
     }
     /**
      * 首先根据此用户的openid查询课程表，如果查询不到则返回空字符串，此时微信端应该
      * 跳转到绑定页面  即教师的openid和课程绑定（页面的业务逻辑在ViewController控制器）
      * 如果查询到课程表之后，根据当时的时间来确定次节课应该上什么。根据次课程的年级和专业来返回学生的名单
-     * @param openid
-     * @return
+     * @param openid 微信公众号的openid
+     * @return 返回所有的学生
      */
     @RequestMapping(value = "/openid",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public Object findAllStudent(@RequestParam("openid") String openid, HttpSession httpSession){
-        List<Student> students=null;
         List<Course> courses=this.courseService.findNowCourse(openid, TimeUtil.getSection());
         if (courses.size()>0){
-            students=this.studentService.findByMajorAndGrade(courses.get(0).getMajor(),courses.get(0).getGrade());
+            List<Student> students=this.studentService.findByMajorAndGrade(courses.get(0).getMajor(),courses.get(0).getGrade());
             httpSession.setAttribute("course",courses.get(0));
             return students;
         }
-        return students;
+        return null;
     }
     //随机点名
     @RequestMapping(value = "/randomstudent",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public Student findRandomStudent(@RequestParam("openid") String openid, HttpSession httpSession){
-        List<Student> students=null;
         List<Course> courses=this.courseService.findNowCourse(openid, TimeUtil.getSection());
         if (courses.size()>0){
-            students=this.studentService.findByMajorAndGrade(courses.get(0).getMajor(),courses.get(0).getGrade());
+            List<Student> students=this.studentService.findByMajorAndGrade(courses.get(0).getMajor(),courses.get(0).getGrade());
             httpSession.setAttribute("course",courses.get(0));
             if (students.size()>0){
                 int randomCount=(int)(Math.random()*students.size());
@@ -102,31 +134,27 @@ public class DataController {
     @RequestMapping(value = "/findstudentscore",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public List<StudentScore> findByStudentScoreOpenidAndId(@RequestParam("course_id") int id){
         Course course=courseService.findById(id);
-        List<StudentScore> studentScores=studentScoreService.findByOpenidAndCourseName(course.getOpenid(),course.getName(),course.getMajor());
-        return studentScores;
+        return studentScoreService.findByOpenidAndCourseName(course.getOpenid(),course.getName(),course.getMajor());
     }
     @RequestMapping(value = "/student/{sno}",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public Student findBySno(@PathVariable("sno") String sno){
-        Student student=this.studentService.findBySno(sno);
-        return student;
+        return this.studentService.findBySno(sno);
     }
     @RequestMapping(value = "/student/{sno}",method = RequestMethod.DELETE,produces ="application/json;charset=UTF-8" )
     public int deleteStudent(@PathVariable("sno") String sno){
-        int count=this.studentService.delete(sno);
-        return count;
+        return this.studentService.delete(sno);
     }
     @RequestMapping(value = "/student",method = RequestMethod.PUT,produces = "application/json;charset=UTF-8")
     public int save(@RequestBody Student student){
-        int count=this.studentService.save(student);
-        return count;
+        return this.studentService.save(student);
     }
 
     /**
      * 设置学生的缺课信息
      * @param sno 学号
      * @param state 0请假，2旷课，3，迟到
-     * @param httpSession
-     * @return
+     * @param httpSession 由spring自动注入
+     * @return 返回成功保存的数量
      */
     @RequestMapping(value = "/no_subject",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
     public String noSubject(@RequestParam("sno") String sno,@RequestParam("state") Integer state,HttpSession httpSession){
@@ -144,8 +172,7 @@ public class DataController {
     //根据课程id
     @RequestMapping(value = "/find_course/{course}",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public List<Absences> findByCourse(@PathVariable("course") String course){
-        List<Absences> absences=absencesService.findByCourse(course);
-        return absences;
+         return absencesService.findByCourse(course);
     }
 
     /**
@@ -188,6 +215,7 @@ public class DataController {
         return classRoomService.findAll();
     }
     //查询当时的空闲教室
+    @SuppressWarnings("all")//看着警告不爽
     @RequestMapping(value = "/findfreeclassroom",method =RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public List<ClassRoom> findFreeClassRoom(){
         List<ClassRoom> classRooms=classRoomService.findAll();
@@ -196,6 +224,7 @@ public class DataController {
         return classRooms;
     }
     //根据指定时间查询教室（传入的数据格式为:2017-02-03-12-22 年-月-日-时-分）
+    @SuppressWarnings("all")//有个警告，不会解决
     @RequestMapping(value = "/findspecifytimeclassroom",method =RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public List<ClassRoom> findSpecifyTimeClassRoom(@RequestParam("date") String str){
         String[] date=str.split("-");
@@ -208,13 +237,11 @@ public class DataController {
     //根据openid查询全部的
     @RequestMapping(value = "/findallcoursebyopenid",method =RequestMethod.GET,produces = "application/json;charset=UTF-8" )
     public List<Course> findAllCourseByOpenid(String openid){
-        List<Course> courses=courseService.findByOpenId(openid);
-        return courses;
+        return courseService.findByOpenId(openid);
     }
     @RequestMapping(value = "/sendshortmessage",method =RequestMethod.POST,produces = "application/json;charset=UTF-8" )
     public int sendShortMessageUrl(@RequestParam("openid") String openid,@RequestParam("major") String major,@RequestParam("grade") String grade,@RequestParam("text") String text){
-        int count=sendShortMessage.SendMessage(openid,major,grade,text);
-        return count;
+        return sendShortMessage.SendMessage(openid,major,grade,text);
     }
     @RequestMapping(value = "/askforleave",method =RequestMethod.PUT,produces = "application/json;charset=UTF-8")
     public int askForLeave(@RequestBody Map map){
@@ -233,13 +260,11 @@ public class DataController {
         //int id, String openid, String cause, int type, Date startDate, Date endDate, int section, int local_1, String local_2, String urgentName, String urgentPhone
         Leave leave=new Leave(map.get("openid").toString(),map.get("cause").toString(),Integer.parseInt(map.get("type").toString()),startDate,endDate,Integer.parseInt(map.get("section").toString()),Integer.parseInt(map.get("local_1").toString()),map.get("local_2").toString(),map.get("urgentName").toString(),map.get("urgentPhone").toString(),0);
         leave.setOpenidTeacher(mentor.getOpenid());
-        int count= leaveService.save(leave);
-        return count;
+        return leaveService.save(leave);
     }
     @RequestMapping(value = "findleavebyopenid",method=RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public List<Leave> findLeaveByOpenId(@RequestParam("openid") String openid){
-        List<Leave> leaves=leaveService.findByOpenId(openid);
-        return leaves;
+       return leaveService.findByOpenId(openid);
     }
     @RequestMapping(value = "updateleavestate",method = RequestMethod.POST)
     public int updateLeaveState(@RequestParam("id") int id,@RequestParam("state") int state){
