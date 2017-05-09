@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,24 +40,40 @@ public class StudentDao
     public List<Student> findByMajor(String major){
         String sql="select sno,name,sex,college,major,grade from Student WHERE major=?";
         RowMapper<Student> rowMapper=new BeanPropertyRowMapper<>(Student.class);
-        List<Student> students=this.jdbcTemplate.query(sql,new Object[]{major},rowMapper);
-        return students;
+       return this.jdbcTemplate.query(sql,new Object[]{major},rowMapper);
+
     }
     public List<Student> findByMajorAndGrade(String major,String grade){
         String sql="select sno,name,sex,college,major,grade from Student WHERE major=? AND grade=?";
         RowMapper<Student> rowMapper=new BeanPropertyRowMapper<>(Student.class);
-        List<Student> students=this.jdbcTemplate.query(sql,new Object[]{major,grade},rowMapper);
-        return students;
+        return this.jdbcTemplate.query(sql,new Object[]{major,grade},rowMapper);
+
     }
     public List<Student> findAll(){
         String sql="select sno,name,sex,college,major,grade from Student";
         RowMapper<Student> rowMapper=new BeanPropertyRowMapper<>(Student.class);
-        List<Student> students=this.jdbcTemplate.query(sql,rowMapper);
-        return students;
+        return   this.jdbcTemplate.query(sql,rowMapper);
     }
     public int delete(String sno){
         String sql="DELETE FROM student WHERE sno=?";
-        int count=this.jdbcTemplate.update(sql,sno);
-        return count;
+        return this.jdbcTemplate.update(sql,sno);
+    }
+    public int[] batchInsert(final List<Student> students){
+        List<Object[]> batch=new ArrayList<>();
+        for (Student student:students){
+            Object[] values=new Object[]{
+                    student.getSno(),
+                    student.getName(),
+                    student.getSex(),
+                    student.getCollege(),
+                    student.getMajor(),
+                    student.getGrade()};
+            batch.add(values);
+            }
+            return jdbcTemplate.batchUpdate(
+                    "INSERT INTO student(sno, name, sex, college, major, grade) VALUES (?,?,?,?,?,?)",
+                    batch
+            );
+
     }
 }

@@ -13,8 +13,12 @@ import java.util.List;
  */
 @Service
 public class StudentService {
-    @Autowired
+
     private StudentDao studentDao;
+    @Autowired
+    public void setStudentDao(StudentDao studentDao) {
+        this.studentDao = studentDao;
+    }
 
     public List<Student> findAll(){
         return this.studentDao.findAll();
@@ -36,5 +40,8 @@ public class StudentService {
     }
     public List<Student> findByMajorAndGrade(String major,String grade){
         return this.studentDao.findByMajorAndGrade(major,grade);
+    }
+    public int[] batchInsert(List<Student> students){
+        return this.studentDao.batchInsert(students);
     }
 }

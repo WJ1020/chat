@@ -3,7 +3,7 @@
 function jump_author() {
     var url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
     var appid="wx8d03b75a183070f8";
-    var response_type="http://www.wodeschool.cn/view/student";
+    var response_type="http://wx.wodeschool.cn/view/student";
     response_type=encodeURIComponent(response_type,"utf-8");
     console.log(response_type);
     url=url.replace("APPID",appid).replace("REDIRECT_URI",response_type).replace("SCOPE","snsapi_userinfo");

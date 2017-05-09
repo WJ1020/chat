@@ -4,11 +4,14 @@ import com.example.dao.entity.*;
 import com.example.entity.LeaveView;
 import com.example.service.DBService.*;
 import com.example.service.SendShortMessage;
+import com.example.util.JsonUtil;
 import com.example.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -285,7 +288,18 @@ public class DataController {
     }
     @RequestMapping(value="/bindmentorbyname",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
     public int bindMentorOpenid(@RequestParam("name") String name,@RequestParam("openid") String openid){
-
        return   this.mentorService.update(openid,name);
+    }
+    @SuppressWarnings("all")
+    @RequestMapping(value = "/batchinsertstudent",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    public int[] batchInsertStudent(@RequestBody String json){
+        try {
+            json= URLDecoder.decode(json,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        List<Student> students= JsonUtil.JsonToList(Student.class,json);
+        return studentService.batchInsert(students);
+
     }
 }
