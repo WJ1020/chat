@@ -8,6 +8,7 @@ import com.example.util.JsonUtil;
 import com.example.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
@@ -111,6 +112,12 @@ public class DataController {
         }
         return null;
     }
+    @RequestMapping(value = "findstudentbymajorandgrade",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    public List<Student> findByStudentMajorAndGrade(String major,String grade){
+        System.out.println(major+grade);
+        return this.studentService.findByMajorAndGrade(major,grade);
+    }
+
     //随机点名
     @RequestMapping(value = "/randomstudent",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public Student findRandomStudent(@RequestParam("openid") String openid, HttpSession httpSession){
@@ -137,6 +144,7 @@ public class DataController {
     @RequestMapping(value = "/findstudentscore",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public List<StudentScore> findByStudentScoreOpenidAndId(@RequestParam("course_id") int id){
         Course course=courseService.findById(id);
+        if (course==null) return null;
         return studentScoreService.findByOpenidAndCourseName(course.getOpenid(),course.getName(),course.getMajor());
     }
     @RequestMapping(value = "/student/{sno}",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
@@ -182,7 +190,7 @@ public class DataController {
      * 用来将教师的微信id和用户名绑定，同时将openid和用户名绑定
      * @param openid openid
      * @param id 用户id
-     * @return 绑定的课程数
+     * @return 绑定的课程数  注意此处只是为了测试
      */
     @RequestMapping(value = "/setopenid",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
     public int bind_openid(@RequestParam("openid") String openid,@RequestParam("id") int id){
@@ -190,6 +198,10 @@ public class DataController {
         int count=courseService.updateOpenid(openid,teacher.getCollege(),teacher.getName());
         if (count>0){
             teacherService.setOpenid(id,openid);
+            //此处只是为了便于测试 将id设置了
+            mentorService.updateAll(openid);
+            //此处只是为了便于演示
+            studentPhoneService.testbind(openid);
         }
         return count;
     }
@@ -212,6 +224,10 @@ public class DataController {
             }
         }
         return absences;
+    }
+    @RequestMapping(value = "findallcourse",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    public List<Course> findAllCourse(){
+        return courseService.findAllCourse();
     }
     @RequestMapping(value="/findclassroomall",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public List<ClassRoom> findByClassRoomAll(){
@@ -253,7 +269,7 @@ public class DataController {
         String openid=map.get("openid").toString();
         StudentPhone studentPhone=studentPhoneService.findByOpenid(openid);
         if (studentPhone==null){//此处应该重新设计
-            return -1;//不存在 //如果你有幸重写我的代码请务必重写此功能的业务逻辑
+            return -1;//不存在
         }
         Student student=studentService.findBySno(studentPhone.getSno());
         if (student==null){
@@ -277,7 +293,7 @@ public class DataController {
     public List<LeaveView> findListViewByOpenId(String openid){
         return this.leaveService.findLeaveViewFindById(openid);
     }
-    //分页查询
+    //分页查询所有缺课学生
     @RequestMapping(value="findlimitleavelist",method = RequestMethod.GET ,produces = "application/json;charset=UTF-8")
     public List<LeaveView> findLimitListViewByOpenid(String openid,int page){
         return this.leaveService.findByOpenidAndPage(openid,page);
@@ -302,4 +318,28 @@ public class DataController {
         return studentService.batchInsert(students);
 
     }
+    @RequestMapping(value = "/batchinsertcourse",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    public int[] batchInsertCourse(@RequestBody String json){
+        try {
+            json=URLDecoder.decode(json,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        List<Course> courses=JsonUtil.JsonToList(Course.class,json);
+        return courseService.batchInsert(courses);
+    }
+
+    //用来保存或者更新学生的学号
+    @RequestMapping(value = "/saveandupdatestudentphone")
+    public String update(StudentPhone studentPhone){
+        System.out.println(studentPhone.getPhone());
+        Student student=this.studentService.findBySno(studentPhone.getSno());
+        if (student==null){
+            return "noFindSno";
+        }
+        this.studentPhoneService.saveAndUpdate(studentPhone);
+        return "success";
+    }
+
+
 }

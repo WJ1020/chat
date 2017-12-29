@@ -44,4 +44,6 @@ public class StudentService {
     public int[] batchInsert(List<Student> students){
         return this.studentDao.batchInsert(students);
     }
+
+
 }

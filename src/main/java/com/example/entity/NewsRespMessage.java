@@ -24,17 +24,17 @@ public class NewsRespMessage {
     @JacksonXmlProperty
     private String MsgType;
     @JacksonXmlProperty
-    private int ArticleCont;
+    private int ArticleCount;
 
     @JacksonXmlProperty
     private List<item> Articles;
 
-    public NewsRespMessage(String toUserName, String fromUserName, int createTime, String msgType, int articleCont, List<item> articles) {
+    public NewsRespMessage(String toUserName, String fromUserName, int createTime, String msgType, int articleCount, List<item> articles) {
         ToUserName = toUserName;
         FromUserName = fromUserName;
         CreateTime = createTime;
         MsgType = msgType;
-        ArticleCont = articleCont;
+        ArticleCount = articleCount;
         Articles = articles;
     }
 }

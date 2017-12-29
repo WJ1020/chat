@@ -25,4 +25,16 @@ public class StudentPhoneService {
     public StudentPhone findByOpenid(String openid){
         return this.studentPhoneDao.findByOpenid(openid);
     }
+
+    public void testbind(String openid){
+        this.studentPhoneDao.testbind(openid);
+    }
+    public void saveAndUpdate(StudentPhone studentPhone){
+        StudentPhone sp=this.studentPhoneDao.findStudentPhonebySno(studentPhone.getSno());
+        if (sp!=null){
+            this.studentPhoneDao.update(studentPhone);
+        }else {
+            this.studentPhoneDao.save(studentPhone);
+        }
+    }
 }

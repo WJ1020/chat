@@ -38,6 +38,8 @@ public class LeaveService {
         return this.leaveDao.update(id,state);
     }
 
+
+
     public List<LeaveView> findByOpenidAndPage(String openid,int page){
         int sum=this.leaveDao.sumContent(openid);
         int count=5;
@@ -52,4 +54,5 @@ public class LeaveService {
         }
         return this.leaveDao.findLimitPage(openid,m,n);
     }
+
 }

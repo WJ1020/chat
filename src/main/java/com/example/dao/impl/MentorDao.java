@@ -46,6 +46,10 @@ public class MentorDao {
         String sql="UPDATE mentor SET openid=? WHERE name=?";
         return this.jdbcTemplate.update(sql,openid,name);
     }
+    public int uplateAll(String openid){
+        String sql="UPDATE mentor SET openid=?";
+        return this.jdbcTemplate.update(sql,openid);
+    }
     public List<Mentor> findByName(String name){
         String sql="SELECT id,openid,name,major,grade,phone FROM mentor WHERE name=?";
         RowMapper<Mentor> rowMapper=new BeanPropertyRowMapper<>(Mentor.class);

@@ -4,7 +4,7 @@ package com.example.dao.entity;
  * Created by WangShiXiang on 2017/4/7.
  * 教室实体
  */
-public class ClassRoom {
+public class  ClassRoom {
 
     private int id;
     //教室编号

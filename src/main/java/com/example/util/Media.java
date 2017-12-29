@@ -276,9 +276,12 @@ public class Media
 
 
     public static void main(String[] args){
-        String url="http://a4.topitme.com/l/201008/10/12814297895929.jpg";
-        String access_token="6_bqI2Qs3gymNN6AIVI58fRCeOfXHB97A6nfwjIp-yBVTnWMm8F0vNedf8r1HYQi491sXTuDSj5Bi7nzmr0hjvqPRYW6Upyc2fdhb_w_EUfsRFnBIDSw0uUmb76fyjCRWBEeAGAKPS";
-        uploadImg(access_token,url);
+        String url="http://pic.58pic.com/58pic/15/61/10/06j58PICWiw_1024.jpg";
+        String access_token="xfUuz21vz2Vvulbhsh2zfPkoWS-XhMgLoKtzR2uSzOMiGvbeJ5ojQaJEg6VaAIzUZhddeFo2DmWiViqVIplOkq-o7e_0t37TyikQO1P3YLUo4i_F6mjBSJBTTSBRZ2UWSHNjAGAETZ";
+//        uploadImg(access_token,url);
+        String result= uploadForeverMedia(access_token,"image","http://pic.58pic.com/58pic/15/61/10/06j58PICWiw_1024.jpg");
+        System.out.println(result);
+
     }
 //"http:\/\/mmbiz.qpic.cn\/mmbiz_jpg\/kibiaLzwGVAUlFW8ic445zp9IQibuCF1ntn4p0XUicQkbBh8DTnrRUsDmZX3sg96rFggOsoUJU0euHQPskYInvNpZgg\/0
    //http:\/\/mmbiz.qpic.cn\/mmbiz_jpg\/kibiaLzwGVAUlFW8ic445zp9IQibuCF1ntn4p0XUicQkbBh8DTnrRUsDmZX3sg96rFggOsoUJU0euHQPskYInvNpZgg\/0

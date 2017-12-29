@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -71,8 +72,12 @@ public class CourseDao {
     public List<Course> findCourseByOpenid(String openid){
         String sql=" SELECT a.id,a.openid,a.name,a.college,a.major,a.grade,a.teacherName,a.count,a.locale FROM Course a WHERE a.id=(SELECT max(id) FROM Course WHERE a.name=name)  and a.openid=?";
         RowMapper<Course> rowMapper=new BeanPropertyRowMapper<>(Course.class);
-        List<Course> courses=this.jdbcTemplate.query(sql,new Object[]{openid},rowMapper);
-        return courses;
+        return this.jdbcTemplate.query(sql,new Object[]{openid},rowMapper);
+    }
+    public List<Course> findAllCourse(){
+        String sql="SELECT a.id,a.openid,a.name,a.college,a.major,a.grade,a.teacherName,a.count,a.locale FROM Course a WHERE a.id=(SELECT max(id) FROM Course WHERE a.name=name)";
+        RowMapper<Course> rowMapper=new BeanPropertyRowMapper<>(Course.class);
+        return this.jdbcTemplate.query(sql,rowMapper);
     }
     /**
      * 根据课的任课老师和学院更新openid
@@ -104,6 +109,23 @@ public class CourseDao {
         List<Course> courses=this.jdbcTemplate.query(sql,rowMapper);
         return courses;
     }
+    public int[] batchInsert(final List<Course> courses){
+        List<Object[]> batch=new ArrayList<>();
+        for (Course course:courses){
+            Object[] values=new Object[]{
+                course.getName(),
+                course.getCollege(),
+                course.getMajor(),
+                course.getGrade(),
+                course.getTeacherName(),
+                course.getCount(),
+                course.getLocale(),
+            };
+            batch.add(values);
+        }
+        return jdbcTemplate.batchUpdate("INSERT INTO course(name, college, major, grade, teacherName, count, locale) VALUES (?,?,?,?,?,?,?)",batch);
+    }
+
     public int[] batchUpdateOpenid(List<Course> courses){
         String sql="UPDATE Course SET openid=? WHERE id=?";
         int[] updateCounts=jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {

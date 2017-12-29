@@ -66,8 +66,8 @@ public class Menu {
             "                }, \n" +
             "                {\n" +
             "                    \"type\": \"view\", \n" +
-            "                    \"name\": \"我的建议\", \n" +
-            "                    \"url\": \"http://v.qq.com/\"\n" +
+            "                    \"name\": \"学生信息绑定\", \n" +
+            "                    \"url\": \"http://wx.wodeschool.cn/view/bindSnoAndPhone\"\n" +
             "                }\n" +
             "            ]\n" +
             "        }, \n" +
@@ -78,16 +78,6 @@ public class Menu {
             "                    \"type\": \"view\", \n" +
             "                    \"name\": \"短信通知\", \n" +
             "                    \"url\": \"http://wx.wodeschool.cn/view/sendshortmessage\"\n" +
-            "                }, \n" +
-            "                {\n" +
-            "                    \"type\": \"view\", \n" +
-            "                    \"name\": \"邮件通知\", \n" +
-            "                    \"url\": \"http://wx.zealer.com/\"\n" +
-            "                }, \n" +
-            "                {\n" +
-            "                    \"type\": \"click\", \n" +
-            "                    \"name\": \"测试\", \n" +
-            "                    \"key\": \"V1001\"\n" +
             "                }\n" +
             "            ]\n" +
             "        }\n" +
@@ -95,7 +85,7 @@ public class Menu {
             "}";
 
     public static void main(String[] args){
-        String url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=WN_01rBT1PN6LJHzMr4dx_VYCc23iINE2RHabKFaXYbqengrXQ72FVx-CujocECYjudmqtwJ2b5Vqkm-wqbuHS4I3du3Ked-L6wXJIyjnbZcVHpFVd6hvvIYey__OJaHGCZcACAVRO";
+        String url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=25py4YJ92FT1KRgK9ZOSZ5fPNj9O_uDQ98hRSrlZsG8xBq_WklpgGmjFXNEAt0-_ppopygkpaxy365WogUBNcFIeHVtFsm7EW468oAE0XhIqHwXEvcgavFzJgcmWCJnEKOJaAAABFA";
        String str=HttpUtil.postDownloadJson(url,menu);
        System.out.println(str);
     }

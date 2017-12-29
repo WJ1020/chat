@@ -49,4 +49,10 @@ public class CourseService {
     public void batchUpdate(List<Course> courses){
         courseDao.batchUpdateOpenid(courses);
     }
+    public List<Course> findAllCourse(){
+        return courseDao.findAllCourse();
+    }
+    public int[] batchInsert(List<Course> courses){
+        return courseDao.batchInsert(courses);
+    }
 }

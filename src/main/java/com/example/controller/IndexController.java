@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * Created by WangShiXiang on 2017/3/8.
- * 主控制器
+ * 主控制器.
  */
 @RestController
 public class IndexController {

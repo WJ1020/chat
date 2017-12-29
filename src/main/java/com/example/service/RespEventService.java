@@ -3,8 +3,10 @@ package com.example.service;
 import com.example.entity.*;
 import com.example.entity.media.Articles;
 import com.example.entity.media.item;
+import com.example.util.MessageUtil;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,13 +18,8 @@ import java.util.List;
 public class RespEventService {
     //自定义菜单事件
     public Object event(CLICKMessage message){
-        TextRespMessage textRespMessage=new TextRespMessage(message.getFromUserName(),message.getToUserName(),message.getCreateTime(),"text","你点击了测试按钮");
-      String url="http:\\/\\/mmbiz.qpic.cn\\/mmbiz_jpg\\/kibiaLzwGVAUlFW8ic445zp9IQibuCF1ntn4W2KvE6XXcg41z1wicb7sibz2hzoHicrpMUpCTF3jlkhvPd3BzZVIrEI7A\\/0";
-//        item item=new item("测试消息","这是测试图文消息和自定义事件",url,"https://www.baidu.com");
-//        List<item> items=new LinkedList<>();
-//        items.add(item);
-//        Articles articles=new Articles(items);
-//        NewsRespMessage newsRespMessage=new NewsRespMessage(message.getFromUserName(),message.getToUserName(),message.getCreateTime(),"news",1,articles);
+
+        
         return null;
     }
     //扫码事件
@@ -32,8 +29,11 @@ public class RespEventService {
     }
     //关注事件
     public Object event(FollowMessage message){
-        TextRespMessage textRespMessage=new TextRespMessage(message.getFromUserName(),message.getToUserName(),message.getCreateTime(),"text","欢迎你的关注");
-        return textRespMessage;
+        item item=new item("欢迎你的关注","欢迎你的关注，我会随时为你服务......","http://upload-images.jianshu.io/upload_images/4047649-7691b3bf1d55d6b8.jpg?imageMogr2/auto-orient/strip","http://www.jianshu.com/p/7af6131974ac");
+        List<item> items=new ArrayList<>();
+        items.add(item);
+        NewsRespMessage newsRespMessage=new NewsRespMessage(message.getFromUserName(),message.getToUserName(),message.getCreateTime(),"news",1,items);
+        return MessageUtil.newsMessageToXml(newsRespMessage);
     }
     public Object event(LocationEventMessage message){
         return null;

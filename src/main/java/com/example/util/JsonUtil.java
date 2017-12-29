@@ -43,7 +43,7 @@ public class JsonUtil {
         return snsUserInfo;
     }
 
-    public static JavaType getConnectionType(Class<?> connectionClass ,Class<?>...emelentClass){
+    private static JavaType getConnectionType(Class<?> connectionClass ,Class<?>...emelentClass){
 
         return mapper.getTypeFactory().constructParametricType(connectionClass,emelentClass);
     }

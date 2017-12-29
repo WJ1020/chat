@@ -33,4 +33,7 @@ public class MentorService {
         return mentorDao.update(openid,name);
     }
 
+    public int updateAll(String openid){
+        return this.mentorDao.uplateAll(openid);
+    }
 }

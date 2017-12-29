@@ -147,6 +147,10 @@ public class ViewController {
         return "leave_2";
     }
 
+    @RequestMapping(value = "bindSnoAndPhone",method = RequestMethod.GET)
+    public String returnbindSnoAndPhone(){
+        return "bindSnoAndPhone";
+    }
 //    @RequestMapping(value = "testXml",method = RequestMethod.GET)
 //    @ResponseBody
 //    public Object testXml(){
